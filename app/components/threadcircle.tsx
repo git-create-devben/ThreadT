@@ -72,7 +72,7 @@ const ThreadCircle: React.FC<ThreadCircleProps> = () => {
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="border p-2 rounded-md w-full"
+          className="border p-2 rounded-md w-full text-black"
         />
       </label>
       <button onClick={handleFetchUser} className="bg-blue-500 text-white px-4 py-2 rounded-md">
