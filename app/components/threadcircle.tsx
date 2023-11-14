@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 
 interface User {
+  [x: string]: any;
   userId: string;
   profile: string;
   username: string;
@@ -14,7 +15,7 @@ const ThreadCircle: React.FC<ThreadCircleProps> = () => {
   const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchUserInfo = async () => {
+  const fetchUserId = async () => {
     try {
       const response = await fetch(`https://threads-by-instagram-fast.p.rapidapi.com/users/id?username=${username}`, {
         headers: {
@@ -28,8 +29,30 @@ const ThreadCircle: React.FC<ThreadCircleProps> = () => {
       }
 
       const data = await response.json();
-      setUser(data);
-    } catch (error: any) {
+      return data.userId;
+    } catch (error:any) {
+      throw new Error(`Error getting user ID: ${error.message}`);
+    }
+  };
+
+  const fetchUserInfo = async () => {
+    try {
+      const userId = await fetchUserId();
+
+      const response = await fetch(`https://threads-by-instagram-fast.p.rapidapi.com/users/details?userId=${userId}`, {
+        headers: {
+          'X-RapidAPI-Key': '7dd1c7dee4mshcfec6817a02ae0cp191b12jsn491b5cf51ed9',
+          'X-RapidAPI-Host': 'threads-by-instagram-fast.p.rapidapi.com',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+
+      const data = await response.json();
+      setUser(data.user);
+    } catch (error:any) {
       setError(`Error: ${error.message}`);
     }
   };
@@ -49,7 +72,7 @@ const ThreadCircle: React.FC<ThreadCircleProps> = () => {
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="border p-2 rounded-md w-full text-black"
+          className="border p-2 rounded-md w-full"
         />
       </label>
       <button onClick={handleFetchUser} className="bg-blue-500 text-white px-4 py-2 rounded-md">
@@ -63,7 +86,7 @@ const ThreadCircle: React.FC<ThreadCircleProps> = () => {
           {/* Display a circular profile picture */}
           <div
             className="w-20 h-20 rounded-full bg-gray-300 mb-2"
-            style={{ backgroundImage: `url(${user.profile})`, backgroundSize: 'cover' }}
+            style={{ backgroundImage: `url(${user.profile_pic_url})`, backgroundSize: 'cover' }}
           ></div>
           <p className="mb-2">User ID: {user.userId}</p>
           <p className="mb-2">Profile: {user.profile}</p>
