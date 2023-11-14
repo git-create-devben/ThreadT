@@ -42,19 +42,31 @@ const ThreadCircle: React.FC<ThreadCircleProps> = () => {
 
   return (
     <div>
-      <h1>Thread Circle Generator</h1>
-      <label>
+      <h1 className="text-2xl font-bold mb-4">Thread Circle Generator</h1>
+      <label className="block mb-4">
         Enter Username:
-        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className='text-black'/>
+        <input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className="border p-2 rounded-md w-full text-black"
+        />
       </label>
-      <button onClick={handleFetchUser}>Fetch User Info</button>
+      <button onClick={handleFetchUser} className="bg-blue-500 text-white px-4 py-2 rounded-md">
+        Fetch User Info
+      </button>
 
-      {error && <div>{error}</div>}
+      {error && <div className="text-red-500 mt-4">{error}</div>}
       {user && (
-        <div>
-          <h2>User Information for {username}</h2>
-          <p>User ID: {user.userId}</p>
-          <p>Profile: {user.profile}</p>
+        <div className="mt-4">
+          <h2 className="text-xl font-semibold mb-2">User Information for {username}</h2>
+          {/* Display a circular profile picture */}
+          <div
+            className="w-20 h-20 rounded-full bg-gray-300 mb-2"
+            style={{ backgroundImage: `url(${user.profile})`, backgroundSize: 'cover' }}
+          ></div>
+          <p className="mb-2">User ID: {user.userId}</p>
+          <p className="mb-2">Profile: {user.profile}</p>
           <p>Username: {user.username}</p>
         </div>
       )}
