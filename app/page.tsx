@@ -8,13 +8,13 @@ const Home: React.FC = () => {
 
   return (
     <div>
-      <h1>Thread Circle Generator</h1>
-      <label>
-        Enter Username:
-        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className='text-black text-bold' />
-      </label>
-      {username && <ThreadCircle username={username} />}
-    </div>
+    <h1>Thread Circle Generator</h1>
+    <label>
+      Enter Username:
+      <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className='text-black'/>
+    </label>
+    {username && <ThreadCircle username={username.startsWith('@') ? username : `@${username}`} />}
+  </div>
   );
 };
 
