@@ -1,21 +1,15 @@
-// pages/index.tsx
-"use client"
-import React, { useState } from 'react';
-import ThreadCircle from '@/app/components/threadcircle';
+import React from 'react'
+import ThreadCircle from './components/threadcircle'
 
-const Home: React.FC = () => {
-  const [username, setUsername] = useState<string>('');
+type Props = {}
 
+const page = (props: Props) => {
   return (
     <div>
-      <h1>Thread Circle Generator</h1>
-      <label>
-        Enter Username:
-        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className='text-black text-bold' />
-      </label>
-      {username && <ThreadCircle username={username} />}
-    </div>
-  );
-};
 
-export default Home;
+      <ThreadCircle/>
+    </div>
+  )
+}
+
+export default page
