@@ -34,7 +34,6 @@ const ThreadCircle: React.FC<ThreadCircleProps> = ({ username }) => {
       <ul>
         {threads.map((thread) => (
           <li key={thread.threadId}>{thread.threadId}</li>
-          {/* Customize the display based on the properties you want to show */}
         ))}
       </ul>
     </div>
