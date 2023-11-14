@@ -18,7 +18,7 @@ const ThreadCircle: React.FC<ThreadCircleProps> = () => {
 
   const fetchUserInfo = async () => {
     try {
-      const response = await fetch(`/api/userInfo?username=${username}`);
+      const response = await fetch(`/api?username=${username}`);
 
       if (!response.ok) {
         throw new Error(`Request failed with status ${response.status}`);
