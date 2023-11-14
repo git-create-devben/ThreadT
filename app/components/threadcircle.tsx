@@ -28,13 +28,14 @@ const ThreadCircle: React.FC<ThreadCircleProps> = ({ username }) => {
   },);
 
   return (
-    <div>
-      <h1>Thread Circle Generator</h1>
-      <label>
-        Enter Username:
-        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-      </label>
-      {username && username.trim() !== '' && <ThreadCircle username={username.startsWith('@') ? username : `@${username}`} />}
+    <div className='text-white'>
+      <h2>Thread Circle for {username}</h2>
+      {/* Your thread circle visualization goes here */}
+      <ul>
+        {threads.map((thread) => (
+          <li key={thread.threadId}>{thread.threadId}</li>
+        ))}
+      </ul>
     </div>
   );
 };
