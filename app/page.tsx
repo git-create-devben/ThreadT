@@ -1,4 +1,5 @@
 // pages/index.tsx
+"use client"
 import React, { useState } from 'react';
 import ThreadCircle from '@/app/components/threadcircle';
 
