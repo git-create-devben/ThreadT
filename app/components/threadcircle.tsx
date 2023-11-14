@@ -1,6 +1,5 @@
 // components/ThreadCircle.tsx
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 
 interface User {
   userId: string;
@@ -19,22 +18,21 @@ const ThreadCircle: React.FC<ThreadCircleProps> = ({ username }) => {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get('https://threads-by-instagram-fast.p.rapidapi.com/users/id', {
-          params: { username },
+        const response = await fetch(`https://threads-by-instagram-fast.p.rapidapi.com/users/id?username=${username}`, {
           headers: {
             'X-RapidAPI-Key': '7dd1c7dee4mshcfec6817a02ae0cp191b12jsn491b5cf51ed9',
             'X-RapidAPI-Host': 'threads-by-instagram-fast.p.rapidapi.com',
           },
         });
 
-        setUser(response.data);
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          const axiosError = error as axios.AxiosError;
-          setError(`Error: ${axiosError.message}, Status: ${axiosError.response?.status}`);
-        } else {
-          setError('An unexpected error occurred.');
+        if (!response.ok) {
+          throw new Error(`Request failed with status ${response.status}`);
         }
+
+        const data = await response.json();
+        setUser(data);
+      } catch (error: any) {
+        setError(`Error: ${error.message}`);
       }
     };
 

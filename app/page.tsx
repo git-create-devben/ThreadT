@@ -7,14 +7,14 @@ const Home: React.FC = () => {
   const [username, setUsername] = useState<string>('');
 
   return (
-    <div className='text-white'>
-    <h1>Thread Circle Generator</h1>
-    <label>
-      Enter Username:
-      <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className='text-black'/>
-    </label>
-    {username && username.trim() !== '' && <ThreadCircle username={username.startsWith('@') ? username : `@${username}`} />}
-  </div>
+    <div>
+      <h1>Thread Circle Generator</h1>
+      <label>
+        Enter Username:
+        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className='text-black text-bold' />
+      </label>
+      {username && <ThreadCircle username={username} />}
+    </div>
   );
 };
 
