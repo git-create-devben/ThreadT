@@ -1,13 +1,12 @@
 import React from 'react'
-import ThreadCircle from './components/threadcircle'
-
+import Home from './home'
 type Props = {}
 
 const page = (props: Props) => {
   return (
     <div>
 
-      <ThreadCircle/>
+      <Home/>
     </div>
   )
 }
