@@ -1,11 +1,12 @@
 // components/ThreadCircle.tsx
 import React, { useState } from 'react';
+import Image from 'next/image';
 
 interface User {
-  [x: string]: any;
   userId: string;
   profile: string;
   username: string;
+  profile_pic_url: string;
 }
 
 interface ThreadCircleProps {}
@@ -15,44 +16,17 @@ const ThreadCircle: React.FC<ThreadCircleProps> = () => {
   const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchUserId = async () => {
-    try {
-      const response = await fetch(`https://threads-by-instagram-fast.p.rapidapi.com/users/id?username=${username}`, {
-        headers: {
-          'X-RapidAPI-Key': '7dd1c7dee4mshcfec6817a02ae0cp191b12jsn491b5cf51ed9',
-          'X-RapidAPI-Host': 'threads-by-instagram-fast.p.rapidapi.com',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`Request failed with status ${response.status}`);
-      }
-
-      const data = await response.json();
-      return data.userId;
-    } catch (error:any) {
-      throw new Error(`Error getting user ID: ${error.message}`);
-    }
-  };
-
   const fetchUserInfo = async () => {
     try {
-      const userId = await fetchUserId();
-
-      const response = await fetch(`https://threads-by-instagram-fast.p.rapidapi.com/users/details?userId=${userId}`, {
-        headers: {
-          'X-RapidAPI-Key': '7dd1c7dee4mshcfec6817a02ae0cp191b12jsn491b5cf51ed9',
-          'X-RapidAPI-Host': 'threads-by-instagram-fast.p.rapidapi.com',
-        },
-      });
+      const response = await fetch(`/api/userInfo?username=${username}`);
 
       if (!response.ok) {
         throw new Error(`Request failed with status ${response.status}`);
       }
 
       const data = await response.json();
-      setUser(data.user);
-    } catch (error:any) {
+      setUser(data);
+    } catch (error: any) {
       setError(`Error: ${error.message}`);
     }
   };
@@ -83,11 +57,10 @@ const ThreadCircle: React.FC<ThreadCircleProps> = () => {
       {user && (
         <div className="mt-4">
           <h2 className="text-xl font-semibold mb-2">User Information for {username}</h2>
-          {/* Display a circular profile picture */}
-          <div
-            className="w-20 h-20 rounded-full bg-gray-300 mb-2"
-            style={{ backgroundImage: `url(${user.profile_pic_url})`, backgroundSize: 'cover' }}
-          ></div>
+          {/* Display a circular profile picture using next/image */}
+          <div className="relative w-20 h-20 mb-2">
+            <Image src={user.profile_pic_url} alt={user.username} layout="fill" objectFit="cover" className="rounded-full" />
+          </div>
           <p className="mb-2">User ID: {user.userId}</p>
           <p className="mb-2">Profile: {user.profile}</p>
           <p>Username: {user.username}</p>
