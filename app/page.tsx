@@ -7,7 +7,7 @@ const Home: React.FC = () => {
   const [username, setUsername] = useState<string>('');
 
   return (
-    <div>
+    <div className='text-white'>
     <h1>Thread Circle Generator</h1>
     <label>
       Enter Username:
