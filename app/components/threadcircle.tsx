@@ -45,7 +45,7 @@ const ThreadCircle: React.FC<ThreadCircleProps> = () => {
       <h1>Thread Circle Generator</h1>
       <label>
         Enter Username:
-        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className='text-white'/>
+        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className='text-black'/>
       </label>
       <button onClick={handleFetchUser}>Fetch User Info</button>
 
