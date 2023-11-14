@@ -1,10 +1,11 @@
 // components/ThreadCircle.tsx
 import React, { useEffect, useState } from 'react';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 
-interface Thread {
-  threadId: string;
-  // Add other properties based on the API response
+interface User {
+  userId: string;
+  profile: string;
+  username: string;
 }
 
 interface ThreadCircleProps {
@@ -12,17 +13,24 @@ interface ThreadCircleProps {
 }
 
 const ThreadCircle: React.FC<ThreadCircleProps> = ({ username }) => {
-  const [threads, setThreads] = useState<Thread[]>([]);
+  const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchUserThreads = async () => {
+    const fetchUserInfo = async () => {
       try {
-        const response = await axios.get(`/rapidapi/users/threads?username=${username}`);
-        setThreads(response.data.threads);
+        const response = await axios.get('https://threads-by-instagram-fast.p.rapidapi.com/users/id', {
+          params: { username },
+          headers: {
+            'X-RapidAPI-Key': '7dd1c7dee4mshcfec6817a02ae0cp191b12jsn491b5cf51ed9',
+            'X-RapidAPI-Host': 'threads-by-instagram-fast.p.rapidapi.com',
+          },
+        });
+
+        setUser(response.data);
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          const axiosError = error as AxiosError;
+          const axiosError = error as axios.AxiosError;
           setError(`Error: ${axiosError.message}, Status: ${axiosError.response?.status}`);
         } else {
           setError('An unexpected error occurred.');
@@ -30,7 +38,9 @@ const ThreadCircle: React.FC<ThreadCircleProps> = ({ username }) => {
       }
     };
 
-    fetchUserThreads();
+    if (username && username.trim() !== '') {
+      fetchUserInfo();
+    }
   }, [username]);
 
   if (error) {
@@ -38,13 +48,15 @@ const ThreadCircle: React.FC<ThreadCircleProps> = ({ username }) => {
   }
 
   return (
-    <div className='text-white'>
-      <h2>Thread Circle for {username}</h2>
-      <ul>
-        {threads.map((thread) => (
-          <li key={thread.threadId}>{thread.threadId}</li>
-        ))}
-      </ul>
+    <div>
+      {user ? (
+        <div>
+          <h2>User Information for {username}</h2>
+          <p>User ID: {user.userId}</p>
+          <p>Profile: {user.profile}</p>
+          <p>Username: {user.username}</p>
+        </div>
+      ) : null}
     </div>
   );
 };
