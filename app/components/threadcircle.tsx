@@ -1,73 +1,33 @@
-// components/ThreadCircle.tsx
-import React, { useState } from 'react';
-import Image from 'next/image';
+// pages/threads/circle.tsx
+import React from 'react';
+import { useQuery } from 'react-query';
+import ThreadCircle  from '@/app/api/page';
+import { Card } from '@mantine/core';
 
-interface User {
-  userId: string;
-  profile: string;
-  username: string;
-  profile_pic_url: string;
-}
+const ThreadsCircle = () => {
+  // Get the thread circle object from the API
+  const { data: threadCircle } = useQuery('threadCircle', async () => {
+    const response = await fetch('/api/threads/circle?threadIds=12345,67890');
+    return await response.json();
+  });
 
-interface ThreadCircleProps {}
-
-const ThreadCircle: React.FC<ThreadCircleProps> = () => {
-  const [username, setUsername] = useState<string>('');
-  const [user, setUser] = useState<User | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchUserInfo = async () => {
-    try {
-      const response = await fetch(`/api?username=${username}`);
-
-      if (!response.ok) {
-        throw new Error(`Request failed with status ${response.status}`);
-      }
-
-      const data = await response.json();
-      setUser(data);
-    } catch (error: any) {
-      setError(`Error: ${error.message}`);
-    }
-  };
-
-  const handleFetchUser = () => {
-    if (username && username.trim() !== '') {
-      fetchUserInfo();
-    }
-  };
+  if (!threadCircle) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Thread Circle Generator</h1>
-      <label className="block mb-4">
-        Enter Username:
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="border p-2 rounded-md w-full text-black"
-        />
-      </label>
-      <button onClick={handleFetchUser} className="bg-blue-500 text-white px-4 py-2 rounded-md">
-        Fetch User Info
-      </button>
-
-      {error && <div className="text-red-500 mt-4">{error}</div>}
-      {user && (
-        <div className="mt-4">
-          <h2 className="text-xl font-semibold mb-2">User Information for {username}</h2>
-          {/* Display a circular profile picture using next/image */}
-          <div className="relative w-20 h-20 mb-2">
-            <Image src={user.profile_pic_url} alt={user.username} layout="fill" objectFit="cover" className="rounded-full" />
-          </div>
-          <p className="mb-2">User ID: {user.userId}</p>
-          <p className="mb-2">Profile: {user.profile}</p>
-          <p>Username: {user.username}</p>
-        </div>
-      )}
+      <h1>Thread Circle</h1>
+      <div className="grid grid-cols-3 gap-4">
+        {threadCircle.threads.map((thread) => (
+          <Card key={thread.id}>
+            <h2 className="card-title">{thread.title}</h2>
+            <p className="card-body">{thread.posts[0].content}</p>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 };
 
-export default ThreadCircle;
+export default ThreadsCircle;
