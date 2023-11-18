@@ -1,17 +1,16 @@
-"use client"
+"use client";
 
-import React from 'react'
-import ThreadCircle from './components/threadcircle'
+import React from "react";
+import ThreadCircle from "./components/threadcircle";
 
-type Props = {}
+type Props = {};
 
 const home = (props: Props) => {
   return (
     <div>
-<ThreadCircle/>
-
+      <ThreadCircle />
     </div>
-  )
-}
+  );
+};
 
-export default home
+export default home;
