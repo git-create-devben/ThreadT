@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import ThreadCircle from "./components/threadcircle";
+import ThreadCircle from "@/app/components/threadcircle";
 
 type Props = {};
 
