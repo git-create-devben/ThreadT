@@ -21,7 +21,7 @@ export async function getData() {
  
 }
 
-getData();
+// getData();
 
 async function threadcircle() {
 return(
